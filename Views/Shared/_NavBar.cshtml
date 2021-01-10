@@ -1,0 +1,104 @@
+﻿@model string
+@using Inventory.Models;
+@{
+
+    User user = Session["user"] as User;
+    List<KeyValuePair<string, string>> navigationControllers=new List<KeyValuePair<string, string>>();
+
+    if (user != null)
+    {
+        string role = user.role.Trim();
+
+        switch (role)
+        {
+            case "admin":
+                navigationControllers = new List<KeyValuePair<string, string>>()
+                {
+                    //new KeyValuePair<string, string>("Promotions", "Promotion"),
+                    new KeyValuePair<string, string>("Category", "Category"),
+                    new KeyValuePair<string, string>("Org Products", "OrgProduct"),
+                    new KeyValuePair<string, string>("Branch", "Branch"),
+                    new KeyValuePair<string, string>("Product", "Product"),
+                    new KeyValuePair<string, string>("Employee", "Employee"),
+                    new KeyValuePair<string, string>("Vendor", "Vendor"),
+                    new KeyValuePair<string, string>("Admin Purchase", "AdminPurchase"),
+                    new KeyValuePair<string, string>("Sales Log", "AdminSales"),
+                    new KeyValuePair<string, string>("Branch Report", "BranchReport")
+                    //new KeyValuePair<string, string>("Invoice", "Invoice"),
+                    //new KeyValuePair<string, string>("Purchase order", "PurchaseOrder"),
+                    //new KeyValuePair<string, string>("Bill", "Bill")
+                };
+                break;
+
+
+            case "employee":
+                navigationControllers = new List<KeyValuePair<string, string>>()
+                {
+                    //new KeyValuePair<string, string>("Promotions", "Promotion"),
+                    //new KeyValuePair<string, string>("Category", "Category"),
+                    //new KeyValuePair<string, string>("Warehouse", "Warehouse"),
+                    //new KeyValuePair<string, string>("Product", "Product"),
+                    //new KeyValuePair<string, string>("Contacts", "Contact"),
+                    new KeyValuePair<string, string>("Branch Product", "EmployeeProduct"),
+                    new KeyValuePair<string, string>("Sales Order", "EmployeeSales/Create"),
+                    new KeyValuePair<string, string>("Purchase Request", "EmployeePurchase")
+                    //new KeyValuePair<string, string>("Invoice", "Invoice"),
+                    //new KeyValuePair<string, string>("Purchase order", "PurchaseOrder"),
+                    //new KeyValuePair<string, string>("Bill", "Bill"),
+                    //new KeyValuePair<string, string>("Customer", "Customer"),
+                };
+                break;
+
+        }
+
+    }
+    else
+    {
+        navigationControllers = new List<KeyValuePair<string, string>>()
+                {
+                    //new KeyValuePair<string, string>("Promotions", "Promotion"),
+                    //new KeyValuePair<string, string>("Category", "Category"),
+                    //new KeyValuePair<string, string>("Warehouse", "Warehouse"),
+                    //new KeyValuePair<string, string>("Product", "Product"),
+                    //new KeyValuePair<string, string>("Contacts", "Contact"),
+                    new KeyValuePair<string, string>("How to Use", "Home"),
+                    new KeyValuePair<string, string>("Register", "Register"),
+                    new KeyValuePair<string, string>("Log In", "Login")
+                    //new KeyValuePair<string, string>("Invoice", "Invoice"),
+                    //new KeyValuePair<string, string>("Purchase order", "PurchaseOrder"),
+                    //new KeyValuePair<string, string>("Bill", "Bill"),
+                    //new KeyValuePair<string, string>("Customer", "Customer"),
+                };
+    }
+
+
+
+}
+
+<div class="navbar navbar-inverse">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </button>
+    </div>
+    <div class="navbar-collapse collapse">
+        <ul class="nav navbar-nav">
+            @foreach (KeyValuePair<string, string> nav in navigationControllers)
+            {
+                if (nav.Key.Equals(Model))
+                {
+                    <li class="active">@Html.ActionLink(nav.Key,"",nav.Value,null,new { style = "color:white; font-weight: bold;" })</li>
+                }
+                else
+                {
+                    <li>@Html.ActionLink(nav.Key, "", nav.Value, null, new { })</li>
+                }
+            }
+        </ul>
+    </div>
+</div>
+
+
+

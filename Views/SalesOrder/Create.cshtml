@@ -1,0 +1,112 @@
+﻿@model Inventory.Models.SalesOrder
+@using Inventory.Models
+@{
+    ViewBag.Title = "Create";
+}
+
+<h2>Create</h2>
+@section Navigation{
+    @Html.Partial("_NavBar", "Sales Order")
+}
+
+@using (Html.BeginForm("Add", "EmployeeSales", FormMethod.Post))
+{
+    <div class="form-horizontal">
+        <hr />
+        <div class="form-group">
+            @Html.LabelFor(model => model.contactList, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.contact,
+                                            Model.contactList, "--Select a Customer--",
+                                            new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-2 text-right">
+                <label class="control-label">Select a Category</label>
+            </div>
+            <div class="col-md-10">
+                <select name="categories_select" class="form-control" id="categories_select">
+                    <option value="0" >All Categories</option>
+                    @foreach (Category cat in Model.categories)
+                    {
+                        <option value="@cat.id">@cat.name</option>
+                    }
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-md-2 control-label text-right">Select a product</label>
+            <div class="col-md-10">
+                <select class="form-control" name="products_select" id="products_select">
+                    <option value="" data-value="" style="display:none;">Select a product</option>
+                    @foreach (Product pro in Model.products)
+                    {
+                        <option value="@pro.id" data-value="@pro.categoryID">@pro.orgProduct</option>
+                    }
+                </select>
+            </div>
+        </div>
+
+        
+
+        @*<div class="form-group">
+            @Html.LabelFor(model => model.productList, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.selectedProductId,
+                                        Model.productList, "--Select a Product--",
+                                        new { @class = "form-control" })
+            </div>
+        </div>*@
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.selectedProductQuantity, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.selectedProductQuantity, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.selectedProductQuantity, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+@*<script type="text/javascript">
+    $('#categories_select').change(function () {
+        // get optios of second dropdown and cache it
+        var $options = $('#products_select')
+            // update the dropdown value if necessary
+            .val('')
+            // get options
+            .find('option')
+            // show all of the initially
+            .show();
+        // check current value is not 0
+        if (this.value != '0')
+            $options
+                // filter out options which is not corresponds to the first option
+                .not('[data-value="' + this.value + '"]')
+                // hide them
+                .hide();
+    })
+</script>*@
+<script>
+    $('#categories_select').change(function () {
+        var $options = $('#products_select').find('option');
+        $options.show();
+        if (this.value != '0') {
+            $options.not('[data-value="' + this.value + '"],[data-value=""]').hide();
+        }
+        var $n = $('#products_select option').length - $('#products_select [style*="display: none;"]').length - 1;
+        $('#products_select option:first').text($n + " products found").hide();
+        $("#products_select").prop("selectedIndex", 0);
+    })
+</script>

@@ -1,0 +1,104 @@
+﻿@model IEnumerable<Inventory.Models.Purchase>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+@section Navigation{
+    @Html.Partial("_NavBar", "Admin Purchase")
+}
+
+<h4>Purchase Requests from employees</h4>
+
+<table class="table table-bordered table-hover table-responsive">
+    <tr>
+        
+        <th>
+            @Html.DisplayNameFor(model => model.product)
+        </th>
+        <th style="text-align:center">
+            @Html.DisplayNameFor(model => model.status)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.quantityReq)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.quantity)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.stock)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.purchasePrice)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.date)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.vendorName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.branchName)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        
+        <td>
+            @Html.DisplayFor(modelItem => item.product)
+        </td>
+        <td style="text-align:center">
+            @if (item.status.Equals("accepted"))
+            {
+                <div class="alert-info">@item.status</div>
+            }
+            else if (item.status.Equals("requested"))
+            {
+                <div class="alert-danger">@item.status</div>
+            }
+            else if (item.status.Equals("received"))
+            {
+                <div class="alert-success">@item.status</div>
+            }
+            else
+            {
+                @item.status
+            }
+
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.quantityReq)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.quantity)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.stock)
+            
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.purchasePrice)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.date)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.vendorName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.branchName)
+        </td>
+        <td>
+            @if (item.status.Equals("requested"))
+            {
+                @Html.ActionLink("Accept", "Edit", new { id = item.id })
+            }
+            @*@Html.ActionLink("Details", "Details", new { id=item.id }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.id })*@
+        </td>
+    </tr>
+}
+
+</table>

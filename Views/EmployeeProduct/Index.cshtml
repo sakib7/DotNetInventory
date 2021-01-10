@@ -1,0 +1,79 @@
+﻿@model IEnumerable<Inventory.Models.Product>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+@section Navigation{
+    @Html.Partial("_NavBar", "Branch Product")
+}
+
+
+<table class="table table-bordered table-hover table-responsive ">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.branchID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.branch)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.categoryID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.category)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.orgProductID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.orgProduct)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.brand)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.retailPrice)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.stock)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.branchID)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.branch)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.categoryID)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.category)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.orgProductID)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.orgProduct)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.brand)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.retailPrice)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.stock)
+        </td>
+        <td>
+            @Html.ActionLink("Details", "Details", new { id=item.id }) 
+        </td>
+    </tr>
+}
+
+</table>

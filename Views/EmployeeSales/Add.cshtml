@@ -1,0 +1,172 @@
+﻿@model Inventory.Models.SalesOrder
+@using Inventory.Models
+@{
+    ViewBag.Title = "Create";
+}
+@section Navigation{
+    @Html.Partial("_NavBar", "Sales Order")
+}
+
+@using (Html.BeginForm("Add", "EmployeeSales"))
+{
+    @Html.AntiForgeryToken()
+
+
+
+
+    <div class="form-horizontal">
+        <h4>SalesOrder</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.contact, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.contact, new { htmlAttributes = new { @class = "form-control", @disabled = "disabled" } })
+                @Html.ValidationMessageFor(model => model.contact, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.orderDate, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.odate, new { htmlAttributes = new { @class = "form-control", @disabled = "disabled" } })
+                @Html.ValidationMessageFor(model => model.orderDate, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-2 text-right">
+                <label class="control-label">Select a Category</label>
+            </div>
+            <div class="col-md-10">
+                <select name="categories_select" class="form-control" id="categories_select">
+                    <option value="0">All Categories</option>
+                    @foreach (Category cat in Model.categories)
+                {
+                        <option value="@cat.id">@cat.name</option>
+                    }
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-md-2 control-label text-right">Select a product</label>
+            <div class="col-md-10">
+                <select class="form-control" name="products_select" id="products_select">
+                    <option value="" data-value="" style="display:none;">Select a product</option>
+                    @foreach (Product pro in Model.products)
+                    {
+                        <option value="@pro.id" data-value="@pro.categoryID" data-stock="@pro.stock">@pro.orgProduct</option>
+                    }
+                </select>
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <label class="control-label col-md-2">Stock</label>
+            <div class="col-md-10">
+                <input class="form-control text-box single-line" disabled="disabled" id="cstock" name="cstock" type="text" value="" />
+                
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.selectedProductQuantity, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.selectedProductQuantity, new { htmlAttributes = new { @class = "form-control", id="qun" } })
+                @Html.ValidationMessageFor(model => model.selectedProductQuantity, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Add to Cart" class="btn btn-default" />
+            </div>
+        </div>
+
+    </div>
+}
+<hr />
+@using (Html.BeginForm("Checkout", "EmployeeSales", FormMethod.Post))
+{
+    <div class="form-group text-center" >
+        <input type="submit" value="Checkout" class="btn btn-danger" />
+    </div>
+}
+
+
+
+<table class="table table-bordered">
+    <tr>
+        <th>product id</th>
+        <th>product name</th>
+        <th>product quantity</th>
+        <th>price per item</th>
+        <th>sub total</th>
+    </tr>
+    @if (Model.cart != null)
+    {
+        foreach (var item in Model.cart)
+        {
+        <tr>
+            <td>
+                @item.Product.id
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Product.orgProduct)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Quantity)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Product.retailPrice)
+            </td>
+            <td>
+                @{item.CalculateSubtotal();}
+                @Html.DisplayFor(modelItem => item.SubTotal)
+            </td>
+            @*<td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.id }) |
+                    @Html.ActionLink("Details", "Details", new { id = item.id }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.id })
+                </td>*@
+        </tr>
+                    }
+
+    <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td>Grand Total</td>
+        <td>@Model.CalculateTotal()</td>
+    </tr>
+                    }
+</table>
+
+
+
+<script type="text/javascript">
+    $('#categories_select').change(function () {
+        // get optios of second dropdown and cache it
+        var $options = $('#products_select')
+            // update the dropdown value if necessary
+            .val('')
+            // get options
+            .find('option')
+            // show all of the initially
+            .show();
+        // check current value is not 0
+        if (this.value != '0')
+            $options
+                // filter out options which is not corresponds to the first option
+                .not('[data-value="' + this.value + '"]')
+                // hide them
+                .hide();
+    })
+
+    $('#products_select').change(function () {
+        var capacityValue = $('#products_select').find(':selected').data('stock');
+        $('#cstock').val(capacityValue);
+    });
+</script>

@@ -1,0 +1,174 @@
+﻿@model Inventory.Models.SalesOrder
+@using Inventory.Models
+@{
+    ViewBag.Title = "Add";
+}
+
+@section Navigation{
+    @Html.Partial("_NavBar", "Sales Order")
+}
+
+<div class="row">
+    <hr /> 
+    <div class="col-md-8">
+        @using (Html.BeginForm("Add", "SalesOrder", FormMethod.Post))
+        {
+
+            @*<div class="form-horizontal">
+                <div class="form-group">
+                    <label class="control-label col-md-2" for="name">Product Name</label>
+                    <div class="col-md-10">
+                        <input class="form-control text-box single-line" data-val="true" data-val-required="The Product Name field is required." id="name" name="name" type="text" value="">
+                        <span class="field-validation-valid text-danger" data-valmsg-for="name" data-valmsg-replace="true"></span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label col-md-2" for="name">Product Name</label>
+                    <div class="col-md-10">
+                        <input class="form-control text-box single-line" data-val="true" data-val-required="The Product Name field is required." id="name" name="name" type="text" value="">
+                        <span class="field-validation-valid text-danger" data-valmsg-for="name" data-valmsg-replace="true"></span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.contactList, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.DropDownListFor(model => model.contact.id,
+                                            Model.contactList, "--Select a Customer--",
+                                            new { @class = "form-control" })
+                    </div>
+                </div>
+            </div>*@
+
+            <div class="form-horizontal">
+                
+
+                <div class="form-group">
+                     <label class="control-label col-md-4">Select a Category</label>
+                    <div class="col-md-8">
+                        <select name="categories_select" class="form-control" id="categories_select">
+                            @foreach (Category cat in Model.categories)
+                            {
+                                <option value="@cat.id">@cat.name</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-md-4 control-label">Select a product</label>
+                    <div class="col-md-8">
+                        <select class="form-control" name="products_select" id="products_select">
+                            @foreach (Product pro in Model.products)
+                            {
+                                <option value="@pro.id" data-value="@pro.category_id">@pro.name</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.selectedProductQuantity, htmlAttributes: new { @class = "control-label col-md-4" })
+                    <div class="col-md-8">
+                        @Html.EditorFor(model => model.selectedProductQuantity, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.selectedProductQuantity, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-offset-4 col-md-10">
+                        <input type="submit" value="Add to Cart" class="btn btn-default" />
+                    </div>
+                </div>
+                
+            </div>
+        }
+
+    </div>
+
+    <div class="row col-md-4 well">
+        <div class="form-group">
+            @Html.LabelFor(model => model.contact, htmlAttributes: new { @class = "control-label col-md-6" })
+            @Html.DisplayFor(model => model.contact.name, new { @class = "form-control col-md-6" })
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.orderDate, htmlAttributes: new { @class = "control-label col-md-6" })
+            @Html.DisplayFor(model => model.orderDate, new { @class = "form-control col-md-6" })
+        </div>
+        
+    </div>
+@using (Html.BeginForm("Checkout", "SalesOrder", FormMethod.Post))
+{
+    <div class="form-group">
+        <input type="submit" value="Checkout" class="btn btn-danger" />
+    </div>
+}
+
+</div>
+<hr />
+
+<table class="table">
+    <tr>
+        <th>product id</th>
+        <th>product name</th>
+        <th>product quantity</th>
+        <th>price per item</th>
+        <th>sub total</th>
+    </tr>
+    @foreach (var item in Model.cart)
+    {
+        <tr>
+            <td>
+                @item.Product.id
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Product.name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Quantity)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Product.price)
+            </td>
+            <td>
+                @{item.CalculateSubtotal();}
+                @Html.DisplayFor(modelItem => item.SubTotal)
+            </td>
+            @*<td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.id }) |
+                @Html.ActionLink("Details", "Details", new { id = item.id }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.id })
+            </td>*@
+        </tr>
+                        }
+    <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td>Grand Total</td>
+        <td>@Model.CalculateTotal()</td>
+    </tr>
+</table>
+
+
+@*<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>*@
+<script type="text/javascript">
+    $('#categories_select').change(function () {
+        // get optios of second dropdown and cache it
+        var $options = $('#products_select')
+            // update the dropdown value if necessary
+            .val('')
+            // get options
+            .find('option')
+            // show all of the initially
+            .show();
+        // check current value is not 0
+        if (this.value != '0')
+            $options
+                // filter out options which is not corresponds to the first option
+                .not('[data-value="' + this.value + '"]')
+                // hide them
+                .hide();
+    })
+</script>

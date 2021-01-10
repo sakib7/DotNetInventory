@@ -1,0 +1,60 @@
+﻿@model IEnumerable<Inventory.Models.SalesOrder>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+@section Navigation{
+    @Html.Partial("_NavBar", "Sales Order")
+}
+
+
+<p>
+    @Html.ActionLink("Create New", "Create", null, new { style = "color:white", @class = "btn btn-success" })
+</p>
+<table class="table table-bordered table-hover table-responsive">
+    <tr>
+        
+        <th>
+            @Html.DisplayNameFor(model => model.contact)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.productName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.selectedProductQuantity)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.total)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.orderDate)
+        </th>
+
+       
+    </tr>
+
+@foreach (var item in Model)
+{
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.contact)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.productName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.selectedProductQuantity)
+        </td>
+        <td>
+            @{ var totalp = item.selectedProductQuantity * item.total;}
+            @totalp
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.orderDate)
+        </td>
+        
+    </tr>
+}
+
+</table>

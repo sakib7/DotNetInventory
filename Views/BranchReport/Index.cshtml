@@ -1,0 +1,39 @@
+﻿@model Inventory.Models.BranchReport
+
+@{
+    ViewBag.Title = "Index";
+}
+
+@section Navigation{
+    @Html.Partial("_NavBar", "Branch Report")
+}
+
+<table class="table table-bordered table-hover table-responsive">
+    <tr>
+        <th class="text-center">Branch</th>
+        <th class="text-center">Product</th>
+        <th class="text-center">quantity</th>
+        <th class="text-center">revenue</th>
+        <th class="text-center">cost</th>
+        <th class="text-center">profit</th>
+    </tr>
+
+
+    @foreach (var branch in Model.branchItemList)
+    {
+        <tr>
+            <td rowspan="@branch.productCount" style="vertical-align:middle; text-align:center">@branch.branchName</td>
+            
+        </tr>
+        foreach (var product in branch.productList)
+        {
+            <tr>
+                <td>@product.name</td>
+                <td>@product.quantity</td>
+                <td>@product.revenue</td>
+                <td>@product.cost</td>
+                <td>@product.profit</td>
+            </tr>
+        }
+    }
+</table>

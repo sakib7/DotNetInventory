@@ -1,0 +1,52 @@
+﻿@using Inventory.Models
+
+@{
+    User user = Session["user"] as User;
+    if (user != null)
+    {
+        
+        @*<table>
+            <tr>
+                <td width="300px">smart Vendor</td>
+                <td width="200px">logged in as @emp.role</td>
+                <td width="200px"><input type="submit" value="Log Out" class="btn btn-default" /></td>
+            </tr>
+        </table>*@
+        
+        <div class="row" style="margin-top:-25px;">
+            <div class="col-md-7" >
+                <strong style="font-size:large;">Smart Vendor</strong>
+                <p>An online inventory management system</p>
+            </div>
+
+            <div class="col-md-3 col-md-offset-1 alert-success" style="margin-bottom:10px">
+                Hi <strong>@user.name</strong> ! <br />
+                You are now logged in as <strong>@user.role</strong> 
+                @if (user.role.Equals("admin"))
+                {
+                    <text>Organization:<strong>@user.organization</strong></text>
+                }
+                else
+                {
+                    <text>Organization:<strong>@user.organization</strong>; Branch:<strong>@user.branch</strong>;</text>
+                }
+            </div>
+
+            <div class="col-md-1" style="margin-top:10px">
+                <form action="@Url.Action("Logout","Login")">
+                    <input type="submit" value="Log Out" class="btn btn-default" />
+                </form>
+            </div>
+        </div>
+
+    }
+    else
+    {
+        <div class="row" style="margin-top:-50px">
+            <div class="col-md-12">
+                <h1 class="text-center">Smart Vendor</h1>
+                <p class="text-center">An online inventory management system</p>
+            </div>
+        </div>
+    }
+}

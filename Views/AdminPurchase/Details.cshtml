@@ -1,0 +1,106 @@
+﻿@model Inventory.Models.Purchase
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Purchase</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.productID)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.productID)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.product)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.product)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.status)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.status)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.quantity)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.quantity)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.stock)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.stock)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.purchasePrice)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.purchasePrice)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.date)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.date)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.vendorID)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.vendorID)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.vendorName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.vendorName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.branchID)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.branchID)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.branchName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.branchName)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
